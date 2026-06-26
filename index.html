@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KPI Intelligence Workspace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">KPI Analysis MVP</p>
+        <h1>KPI app ที่อ่านความเคลื่อนไหวงาน แล้วแปลงเป็นคะแนนที่อธิบายได้</h1>
+        <p class="hero-text">
+          บันทึกงานรายวันหรือรายสัปดาห์ของคุณจะถูกสรุปเป็น evidence, mapped เข้าหัวข้อ KPI,
+          ประเมินคะแนนเบื้องต้นด้วย AI และสามารถบันทึก history ขึ้น Firebase ได้
+        </p>
+      </div>
+      <div class="hero-panel">
+        <div class="hero-stat">
+          <span>AI Provider</span>
+          <strong>OpenAI / Gemini</strong>
+        </div>
+        <div class="hero-stat">
+          <span>Storage</span>
+          <strong>Firebase Firestore</strong>
+        </div>
+        <div class="hero-stat">
+          <span>Scoring Mode</span>
+          <strong>Evidence-based</strong>
+        </div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="card input-card">
+        <div class="section-head">
+          <div>
+            <p class="section-label">Work Input</p>
+            <h2>กรอก note ความเคลื่อนไหวงาน</h2>
+          </div>
+          <span class="status-pill" id="firebase-status">Firebase: checking</span>
+        </div>
+
+        <form id="analysis-form" class="analysis-form">
+          <div class="grid two">
+            <label class="field">
+              <span>ชื่อพนักงาน</span>
+              <input id="employee-name" type="text" placeholder="เช่น สุรกิจ วงศ์สุวรรณ">
+            </label>
+            <label class="field">
+              <span>รอบประเมิน</span>
+              <input id="review-period" type="text" placeholder="เช่น Q2/2569 หรือ มิ.ย. 2569">
+            </label>
+          </div>
+
+          <div class="grid two">
+            <label class="field">
+              <span>AI Provider</span>
+              <select id="provider">
+                <option value="openai">OpenAI</option>
+                <option value="gemini">Gemini</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>ผลลัพธ์เชิงตัวเลข</span>
+              <input id="metrics" type="text" placeholder="เช่น Traffic +18%, AI Cite 87%, Time Spent +9%">
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Note งาน / ความเคลื่อนไหว</span>
+            <textarea
+              id="work-note"
+              rows="12"
+              placeholder="ตัวอย่าง:
+- ปรับ schema และ SEO ให้บทความชุดเลือกตั้ง 18 ชิ้น
+- ทำ dashboard weekly ให้ทีม editorial ดู CTR, traffic, AI cite
+- ทดสอบ AI feature ใหม่บนหน้าเว็บ และปรับ UX จาก feedback
+- สรุปผลและแชร์ guideline ให้ทีมใช้งานต่อ"
+            ></textarea>
+          </label>
+
+          <div class="helper-box">
+            <p>AI จะช่วยประมวลผลให้ 4 อย่าง</p>
+            <ul>
+              <li>สรุปสิ่งที่คุณทำเป็นภาษาที่อ่านง่าย</li>
+              <li>ดึง evidence และ impact ออกมาจาก note</li>
+              <li>map เข้า KPI แต่ละข้อ</li>
+              <li>เสนอคะแนน 1-5 พร้อมเหตุผลและคำแนะนำถัดไป</li>
+            </ul>
+          </div>
+
+          <div class="button-row">
+            <button class="primary-btn" id="submit-btn" type="submit">วิเคราะห์ KPI ด้วย AI</button>
+            <button class="ghost-btn" id="fill-sample-btn" type="button">ใส่ตัวอย่าง</button>
+          </div>
+        </form>
+      </section>
+
+      <aside class="side-column">
+        <section class="card">
+          <div class="section-head">
+            <div>
+              <p class="section-label">KPI Map</p>
+              <h2>หัวข้อที่ระบบจะประเมิน</h2>
+            </div>
+          </div>
+          <div id="kpi-overview" class="kpi-overview"></div>
+        </section>
+
+        <section class="card">
+          <div class="section-head">
+            <div>
+              <p class="section-label">Recent Entries</p>
+              <h2>ประวัติที่บันทึกไว้</h2>
+            </div>
+          </div>
+          <div id="recent-entries" class="recent-entries">
+            <p class="empty-note">ยังไม่มีข้อมูลล่าสุด</p>
+          </div>
+        </section>
+      </aside>
+    </main>
+
+    <section class="card result-card hidden" id="result-card">
+      <div class="section-head">
+        <div>
+          <p class="section-label">AI Output</p>
+          <h2>ผลการประเมินเบื้องต้น</h2>
+        </div>
+        <span class="status-pill neutral" id="analysis-status">Ready</span>
+      </div>
+
+      <div class="result-grid">
+        <article class="result-panel score-panel">
+          <p class="result-label">คะแนนรวมที่ประเมินได้</p>
+          <div class="score-hero">
+            <strong id="overall-score">0</strong>
+            <span>/ 100</span>
+          </div>
+          <p class="confidence" id="confidence-text">Confidence: -</p>
+          <p class="summary-text" id="summary-text"></p>
+          <p class="summary-text" id="scoring-note"></p>
+        </article>
+
+        <article class="result-panel">
+          <p class="result-label">AI อ่าน note ของคุณว่าอย่างไร</p>
+          <div id="movement-analysis" class="movement-analysis"></div>
+        </article>
+      </div>
+
+      <div class="section-block">
+        <p class="result-label">KPI Score Breakdown</p>
+        <div id="score-breakdown" class="score-breakdown"></div>
+      </div>
+
+      <div class="section-block grid two">
+        <article class="result-panel">
+          <p class="result-label">Evidence ที่ดึงจาก note</p>
+          <div id="evidence-list" class="chip-list"></div>
+        </article>
+        <article class="result-panel">
+          <p class="result-label">คำแนะนำเพื่อขยับคะแนน</p>
+          <div id="recommendations" class="recommendation-list"></div>
+        </article>
+      </div>
+
+      <div class="section-block">
+        <p class="result-label">JSON Output สำหรับต่อยอดระบบ</p>
+        <pre id="json-output" class="json-output"></pre>
+      </div>
+    </section>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

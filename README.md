@@ -1,0 +1,68 @@
+# KPI AI App
+
+MVP สำหรับประเมิน KPI จาก work note โดยใช้ OpenAI หรือ Gemini วิเคราะห์ note งาน แล้ว map เข้า rubric KPI พร้อมบันทึก history ลง Firebase Firestore
+
+## โครงสร้าง
+
+- `index.html` หน้า UI หลัก
+- `styles.css` งานออกแบบและ layout
+- `app.js` logic ฝั่ง client, เรียก AI API, render score, save history
+- `api/analyze-kpi.js` serverless function สำหรับเรียก OpenAI หรือ Gemini
+- `data/kpi-config.json` โครงสร้าง KPI และน้ำหนักคะแนน
+- `config/firebase.js` ค่า Firebase web config
+
+## สิ่งที่ระบบทำได้
+
+- รับ note ความเคลื่อนไหวงาน, metrics, ชื่อพนักงาน และรอบประเมิน
+- ส่ง note ไปให้ AI วิเคราะห์ว่า "คุณทำอะไร", "มี evidence อะไร", "เกี่ยวกับ KPI ข้อไหน"
+- สร้างคะแนนเบื้องต้นระดับ 1-5 ต่อหัวข้อ
+- คำนวณ weighted score ออกมาเป็นคะแนนรวม 100
+- หาก Part 2 และ Part 3 ยังไม่ถูกตั้ง rubric จริง ระบบจะ normalize คะแนนจากหัวข้อที่ active อยู่และแจ้งไว้ในผลลัพธ์
+- บันทึก request และผลการวิเคราะห์ลง Firestore เมื่อเปิดใช้ Firebase
+
+## การตั้งค่า
+
+1. ตั้งค่า API keys ใน environment ของ Vercel หรือ local server จากไฟล์ `.env.example`
+2. แก้ไฟล์ `config/firebase.js`
+3. เปลี่ยน `enabled` เป็น `true`
+4. ใส่ Firebase web config ของโปรเจกต์จริง
+5. สร้าง Firestore collection ชื่อ `kpiEntries`
+
+## Firestore ที่แนะนำ
+
+Collection: `kpiEntries`
+
+Document example:
+
+```json
+{
+  "employeeName": "สุรกิจ วงศ์สุวรรณ",
+  "reviewPeriod": "Q2 / 2569",
+  "provider": "openai",
+  "note": "สรุปงาน...",
+  "metrics": "Traffic +18%",
+  "status": "completed",
+  "analysis": {
+    "overallWeightedScore": 78.4
+  },
+  "createdAt": "serverTimestamp",
+  "updatedAt": "serverTimestamp"
+}
+```
+
+## เรื่องที่ควรทำต่อก่อนใช้จริง
+
+- เติม rubric ของ Part 2 และ Part 3 ให้ครบ
+- เพิ่ม Firebase Auth และ Firestore Security Rules
+- เพิ่มหน้า manager review เพื่อ override คะแนนของ AI
+- เก็บหลักฐานแนบ เช่น URL งาน, dashboard link, screenshot
+- เพิ่ม export เป็น PDF หรือ summary report
+
+## วิธี deploy
+
+เหมาะกับ Vercel เพราะใช้ static frontend + serverless function
+
+1. import โปรเจกต์นี้เข้า Vercel
+2. ตั้งค่า environment variables
+3. deploy
+4. เปิดหน้าเว็บและทดสอบด้วย sample note

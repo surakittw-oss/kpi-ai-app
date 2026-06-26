@@ -1,0 +1,94 @@
+{
+  "title": "Officer KPI Form 2569",
+  "parts": [
+    {
+      "id": "part1",
+      "name": "Job Performance",
+      "weight": 70,
+      "items": [
+        {
+          "id": "seo_geo_aio",
+          "name": "SEO, GEO & AIO Excellence with Team Enablement",
+          "weightWithinPart": 30,
+          "goal": "ยกระดับคุณภาพบทความตามหลัก SEO, GEO & AIO และมีส่วนร่วมในการขับเคลื่อนการเรียนรู้ภายในองค์กร",
+          "scoreHints": {
+            "1": "ยัง optimize ไม่ครบตามหลัก และผลลัพธ์ต่ำ",
+            "3": "optimize ได้ในระดับใช้งานจริง มีบทความได้มาตรฐานบางส่วน",
+            "5": "optimize ได้ครบ มี consult, review, sharing และช่วยยกระดับทีมอย่างเป็นรูปธรรม"
+          }
+        },
+        {
+          "id": "dashboard_insight",
+          "name": "Actionable Data Dashboard & Audience Insight",
+          "weightWithinPart": 30,
+          "goal": "ร่วมพัฒนา dashboard ด้าน website performance และ SEO/GEO/AIO เพื่อสร้าง actionable insights ให้ editorial และ AE",
+          "scoreHints": {
+            "1": "dashboard ใช้งานจริงไม่ได้หรือข้อมูลไม่ครบ",
+            "3": "พัฒนา dashboard แบบ weekly/monthly ที่ใช้งานจริงได้และมี insight เบื้องต้น",
+            "5": "dashboard กลายเป็นเครื่องมือหลักในการพัฒนาคอนเทนต์หรือสร้าง impact เชิงธุรกิจ"
+          }
+        },
+        {
+          "id": "website_ux",
+          "name": "Website Redesign & User Experience Optimization",
+          "weightWithinPart": 20,
+          "goal": "ร่วมพัฒนา website redesign, minor changes และปรับปรุง journey เพื่อเพิ่ม time spent และ returning users",
+          "scoreHints": {
+            "1": "มีส่วนร่วมน้อย ยัง support feature หรือโครงสร้างเว็บได้ไม่ครบ",
+            "3": "มีส่วนร่วมในการพัฒนา feature และปรับ backend/front-end รองรับงานจริง",
+            "5": "ผลักดัน feature หรือโครงสร้างจน live และเห็นผลต่อ adoption, AI visibility หรือ conversion"
+          }
+        },
+        {
+          "id": "ai_feature_ux",
+          "name": "AI Features Optimization & User Experience Improvement",
+          "weightWithinPart": 20,
+          "goal": "เสนอ พัฒนา และปรับปรุง AI features เพื่อยกระดับ user experience, engagement และ retention",
+          "scoreHints": {
+            "1": "เสนอ feature ที่ไม่ตอบโจทย์หรือยังใช้งานจริงไม่ได้",
+            "3": "feature implement ได้จริง แต่ impact ยังไม่ชัดหรือยังติดตามผลน้อย",
+            "5": "feature ตอบโจทย์ user, ใช้งานจริง, มี impact และปรับปรุงต่อเนื่องจากข้อมูล"
+          }
+        }
+      ]
+    },
+    {
+      "id": "part2",
+      "name": "Behavior Performance",
+      "weight": 20,
+      "items": [
+        {
+          "id": "behavior_placeholder",
+          "name": "Behavior Rubric Placeholder",
+          "weightWithinPart": 100,
+          "goal": "ส่วนนี้ควรเพิ่ม rubric behavior จริงจาก HR หรือ manager",
+          "scoreHints": {
+            "1": "ต่ำกว่าคาดหวัง",
+            "3": "อยู่ในระดับคาดหวังบางส่วน",
+            "5": "สม่ำเสมอและเป็นแบบอย่าง"
+          },
+          "inactive": true
+        }
+      ]
+    },
+    {
+      "id": "part3",
+      "name": "Learning Performance",
+      "weight": 10,
+      "items": [
+        {
+          "id": "learning_placeholder",
+          "name": "Learning Rubric Placeholder",
+          "weightWithinPart": 100,
+          "goal": "ส่วนนี้ควรเพิ่มแผนการเรียนรู้จริง เช่น course, sharing, certification",
+          "scoreHints": {
+            "1": "ต่ำกว่าคาดหวัง",
+            "3": "ทำได้ตามความคาดหวังบางส่วน",
+            "5": "ทำได้ตามหรือเกินความคาดหวัง"
+          },
+          "inactive": true
+        }
+      ]
+    }
+  ]
+}
