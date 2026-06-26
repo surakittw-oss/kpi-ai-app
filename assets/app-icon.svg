@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">KPI App Icon</title>
+  <desc id="desc">Retro black and white Macintosh-inspired monitor with KPI bars</desc>
+  <rect width="128" height="128" fill="#d9d9d9"/>
+  <rect x="16" y="16" width="96" height="78" fill="#ffffff" stroke="#111111" stroke-width="6"/>
+  <rect x="26" y="28" width="76" height="48" fill="#f3f3f3" stroke="#111111" stroke-width="4"/>
+  <rect x="32" y="58" width="10" height="12" fill="#111111"/>
+  <rect x="46" y="48" width="10" height="22" fill="#111111"/>
+  <rect x="60" y="40" width="10" height="30" fill="#111111"/>
+  <rect x="74" y="34" width="10" height="36" fill="#111111"/>
+  <rect x="88" y="52" width="8" height="18" fill="#111111"/>
+  <rect x="52" y="94" width="24" height="10" fill="#111111"/>
+  <rect x="42" y="104" width="44" height="8" fill="#ffffff" stroke="#111111" stroke-width="4"/>
+</svg>
