@@ -156,7 +156,7 @@ function collectSettingsFromForm() {
 
 function applySettingsToUi() {
   document.getElementById("provider").value = appSettings.defaultProvider || "openai";
-  providerBadge.textContent = `Provider: ${(appSettings.defaultProvider || "openai").toUpperCase()}`;
+  providerBadge.textContent = `Provider: ${formatProviderLabel(appSettings.defaultProvider || "openai")}`;
   storageBadge.textContent = appSettings.firebase.enabled ? "Storage: Firebase configured" : "Storage: Local mode";
   storageBadge.className = appSettings.firebase.enabled ? "mini-badge active" : "mini-badge";
 }
@@ -344,6 +344,7 @@ function getRuntimeCredentials() {
 
 function renderAnalysis(analysis) {
   document.getElementById("overall-score").textContent = analysis.overallWeightedScore.toFixed(1);
+  document.getElementById("scoring-summary").textContent = formatScoringSummary(analysis.scoringSummary);
   document.getElementById("confidence-text").textContent = `Confidence: ${analysis.confidence}`;
   document.getElementById("summary-text").textContent = analysis.summary;
   document.getElementById("scoring-note").textContent = analysis.scoringNote || "";
@@ -379,7 +380,7 @@ function renderScoreBreakdown(items) {
                 <h3>${escapeHtml(item.name)}</h3>
                 <p>${escapeHtml(item.reason)}</p>
               </div>
-              <div class="score-meta">${item.score.toFixed(1)} / 5<br>${item.weightedContribution.toFixed(1)} pts</div>
+              <div class="score-meta">${item.score.toFixed(1)} / 5<br>${item.weightedContribution.toFixed(1)} pts<br>raw ${item.rawContribution.toFixed(2)}</div>
             </div>
             <div class="score-bar">
               <div class="score-fill" style="width:${width}%"></div>
@@ -453,4 +454,16 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
+}
+
+function formatProviderLabel(provider) {
+  return provider === "gemini" ? "Gemini" : "OpenAI";
+}
+
+function formatScoringSummary(summary) {
+  if (!summary) {
+    return "";
+  }
+
+  return `Weight basis ${summary.rawWeightTotal}% -> normalized to ${summary.normalizedTo}%`;
 }

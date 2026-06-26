@@ -193,16 +193,18 @@ function normalizeAnalysis(parsed, kpiConfig) {
       .filter((item) => !item.inactive)
       .map((item) => ({ ...item, part }))
   );
-  const activePartWeightTotal = activeItems.reduce((sum, item) => sum + (item.part.weight * item.weightWithinPart) / 100, 0);
+  const rawWeightTotal = activeItems.reduce(
+    (sum, item) => sum + (item.part.weight * item.weightWithinPart) / 100,
+    0
+  );
+  const normalizationFactor = rawWeightTotal > 0 ? 100 / rawWeightTotal : 1;
 
   const itemScores = activeItems.map((item) => {
     const fromModel = (parsed.itemScores || []).find((entry) => entry.id === item.id) || {};
     const score = clamp(Number(fromModel.score || 0), 1, 5);
     const scoreNormalized = score / 5;
     const rawContribution = scoreNormalized * item.weightWithinPart * (item.part.weight / 100);
-    const weightedContribution = activePartWeightTotal > 0
-      ? (rawContribution / activePartWeightTotal) * 100
-      : 0;
+    const weightedContribution = rawContribution * normalizationFactor;
 
     return {
       id: item.id,
@@ -227,10 +229,25 @@ function normalizeAnalysis(parsed, kpiConfig) {
     recommendations: sanitizeStringArray(parsed.recommendations),
     itemScores,
     overallWeightedScore,
-    scoringNote: activePartWeightTotal < 100
-      ? "คะแนนนี้ถูก normalize จาก KPI ที่ active อยู่ในระบบตอนนี้ เนื่องจาก Part 2 และ Part 3 ยังเป็น placeholder"
-      : "คะแนนนี้คำนวณจาก KPI ครบทุก part"
+    scoringSummary: {
+      rawWeightTotal: round2(rawWeightTotal),
+      normalizedTo: 100,
+      normalizationFactor: round4(normalizationFactor)
+    },
+    scoringNote: buildScoringNote(rawWeightTotal)
   };
+}
+
+function buildScoringNote(rawWeightTotal) {
+  if (rawWeightTotal === 100) {
+    return "คะแนนนี้คำนวณจากน้ำหนัก KPI ครบ 100% ตามฟอร์ม จึงไม่ต้อง normalize เพิ่ม";
+  }
+
+  if (rawWeightTotal > 100) {
+    return `น้ำหนัก KPI ที่ active อยู่รวมกัน ${round2(rawWeightTotal)}% ระบบจึง normalize ลงมาเป็น 100% อัตโนมัติก่อนคิดคะแนน เพื่อให้คะแนนรวมไม่เกินจริง`;
+  }
+
+  return `น้ำหนัก KPI ที่ active อยู่รวมกัน ${round2(rawWeightTotal)}% ระบบจึง scale ขึ้นเป็นฐาน 100% อัตโนมัติ เพื่อให้เปรียบเทียบคะแนนรวมได้ชัดเจน`;
 }
 
 function sanitizeStringArray(value) {
@@ -246,4 +263,12 @@ function clamp(value, min, max) {
 
 function round1(value) {
   return Math.round(value * 10) / 10;
+}
+
+function round2(value) {
+  return Math.round(value * 100) / 100;
+}
+
+function round4(value) {
+  return Math.round(value * 10000) / 10000;
 }

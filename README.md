@@ -18,6 +18,7 @@ MVP สำหรับประเมิน KPI จาก work note โดยใ
 - สร้างคะแนนเบื้องต้นระดับ 1-5 ต่อหัวข้อ
 - คำนวณ weighted score ออกมาเป็นคะแนนรวม 100
 - หาก Part 2 และ Part 3 ยังไม่ถูกตั้ง rubric จริง ระบบจะ normalize คะแนนจากหัวข้อที่ active อยู่และแจ้งไว้ในผลลัพธ์
+- หากน้ำหนัก KPI ในฟอร์มรวมกันไม่เท่ากับ 100% เช่น 105% ระบบจะ normalize weight อัตโนมัติก่อนคิดคะแนน และอธิบาย basis นี้ใน UI
 - บันทึก request และผลการวิเคราะห์ลง Firestore เมื่อเปิดใช้ Firebase
 - มีเมนู `Settings หลังบ้าน` สำหรับตั้งค่า provider default, API key แบบ prototype และ Firebase config ผ่านหน้าเว็บ
 
