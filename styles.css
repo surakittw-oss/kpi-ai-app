@@ -46,7 +46,7 @@ body {
 
 .hero {
   display: grid;
-  grid-template-columns: 1.7fr 1fr;
+  grid-template-columns: 1.5fr 0.9fr;
   gap: 24px;
   padding: 34px;
   border-radius: var(--radius-xl);
@@ -86,30 +86,62 @@ body {
   color: var(--muted);
 }
 
-.hero-panel {
+.hero-actions {
   display: grid;
   gap: 14px;
+  align-content: start;
 }
 
-.hero-stat {
-  padding: 18px 20px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.76);
+.settings-trigger {
+  padding: 22px 22px 20px;
   border: 1px solid rgba(27, 36, 48, 0.08);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.84), rgba(220,230,255,0.72));
+  text-align: left;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
 }
 
-.hero-stat span {
+.settings-kicker,
+.hero-glance .mini-badge {
   display: block;
   font-size: 12px;
   color: var(--muted);
-  margin-bottom: 8px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.hero-stat strong {
+.settings-trigger strong {
+  display: block;
   font-family: "Sora", sans-serif;
-  font-size: 18px;
+  font-size: 28px;
+  margin: 8px 0 6px;
+}
+
+.settings-trigger small {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.hero-glance {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.mini-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(27, 36, 48, 0.08);
+  font-weight: 700;
+}
+
+.mini-badge.active {
+  background: rgba(0, 87, 255, 0.08);
+  color: var(--accent);
 }
 
 .layout {
@@ -427,6 +459,92 @@ body {
   font-size: 26px;
 }
 
+.settings-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+}
+
+.settings-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(16, 20, 28, 0.42);
+  backdrop-filter: blur(6px);
+}
+
+.settings-panel {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  bottom: 18px;
+  width: min(560px, calc(100vw - 24px));
+  padding: 24px;
+  overflow: auto;
+  border-radius: 28px;
+  background: rgba(255, 251, 245, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 30px 80px rgba(20, 24, 33, 0.24);
+}
+
+.settings-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.settings-form,
+.settings-group {
+  display: grid;
+  gap: 16px;
+}
+
+.settings-group {
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.74);
+  border: 1px solid rgba(27, 36, 48, 0.08);
+}
+
+.settings-group-head h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
+  font-family: "Sora", sans-serif;
+}
+
+.settings-group-head p,
+.settings-note {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+  font-size: 13px;
+}
+
+.icon-btn {
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(27, 36, 48, 0.1);
+  border-radius: 999px;
+  background: rgba(27, 36, 48, 0.06);
+  color: var(--ink);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+}
+
+.check-row input {
+  width: 18px;
+  height: 18px;
+}
+
 @media (max-width: 1024px) {
   .hero,
   .layout,
@@ -443,6 +561,14 @@ body {
   .hero,
   .card {
     padding: 20px;
+  }
+
+  .settings-panel {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    width: auto;
+    bottom: 10px;
   }
 }
 

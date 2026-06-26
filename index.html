@@ -20,18 +20,16 @@
           ประเมินคะแนนเบื้องต้นด้วย AI และสามารถบันทึก history ขึ้น Firebase ได้
         </p>
       </div>
-      <div class="hero-panel">
-        <div class="hero-stat">
-          <span>AI Provider</span>
-          <strong>OpenAI / Gemini</strong>
-        </div>
-        <div class="hero-stat">
-          <span>Storage</span>
-          <strong>Firebase Firestore</strong>
-        </div>
-        <div class="hero-stat">
-          <span>Scoring Mode</span>
-          <strong>Evidence-based</strong>
+      <div class="hero-actions">
+        <button class="settings-trigger" id="open-settings-btn" type="button">
+          <span class="settings-kicker">Admin Menu</span>
+          <strong>Settings หลังบ้าน</strong>
+          <small>API key, Firebase, provider default</small>
+        </button>
+        <div class="hero-glance">
+          <span class="mini-badge" id="provider-badge">Provider: OpenAI</span>
+          <span class="mini-badge" id="storage-badge">Storage: Local mode</span>
+          <span class="mini-badge">Scoring: Evidence-based</span>
         </div>
       </div>
     </header>
@@ -175,6 +173,92 @@
         <pre id="json-output" class="json-output"></pre>
       </div>
     </section>
+  </div>
+
+  <div class="settings-drawer hidden" id="settings-drawer">
+    <div class="settings-backdrop" id="settings-backdrop"></div>
+    <aside class="settings-panel" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+      <div class="settings-head">
+        <div>
+          <p class="section-label">Back Office</p>
+          <h2 id="settings-title">Settings หลังบ้าน</h2>
+        </div>
+        <button class="icon-btn" id="close-settings-btn" type="button" aria-label="Close settings">×</button>
+      </div>
+
+      <form id="settings-form" class="settings-form">
+        <section class="settings-group">
+          <div class="settings-group-head">
+            <h3>AI Provider</h3>
+            <p>ตั้งค่า provider เริ่มต้น และ API key สำหรับโหมดต้นแบบ</p>
+          </div>
+          <div class="grid two">
+            <label class="field">
+              <span>Default Provider</span>
+              <select id="settings-default-provider">
+                <option value="openai">OpenAI</option>
+                <option value="gemini">Gemini</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>OpenAI API Key</span>
+              <input id="settings-openai-key" type="password" placeholder="sk-...">
+            </label>
+          </div>
+          <label class="field">
+            <span>Gemini API Key</span>
+            <input id="settings-gemini-key" type="password" placeholder="AIza...">
+          </label>
+          <p class="settings-note">คีย์ที่กรอกตรงนี้จะถูกเก็บใน browser ของเครื่องนี้เท่านั้น เหมาะกับ internal prototype มากกว่าการใช้งาน production</p>
+        </section>
+
+        <section class="settings-group">
+          <div class="settings-group-head">
+            <h3>Firebase</h3>
+            <p>ตั้งค่า Firestore สำหรับเก็บ note และผลวิเคราะห์</p>
+          </div>
+          <label class="check-row">
+            <input id="settings-firebase-enabled" type="checkbox">
+            <span>เปิดใช้งาน Firebase จากหน้า Settings นี้</span>
+          </label>
+          <div class="grid two">
+            <label class="field">
+              <span>API Key</span>
+              <input id="settings-firebase-api-key" type="text" placeholder="AIza...">
+            </label>
+            <label class="field">
+              <span>Auth Domain</span>
+              <input id="settings-firebase-auth-domain" type="text" placeholder="project.firebaseapp.com">
+            </label>
+          </div>
+          <div class="grid two">
+            <label class="field">
+              <span>Project ID</span>
+              <input id="settings-firebase-project-id" type="text" placeholder="your-project-id">
+            </label>
+            <label class="field">
+              <span>Storage Bucket</span>
+              <input id="settings-firebase-storage-bucket" type="text" placeholder="project.firebasestorage.app">
+            </label>
+          </div>
+          <div class="grid two">
+            <label class="field">
+              <span>Messaging Sender ID</span>
+              <input id="settings-firebase-messaging-sender-id" type="text" placeholder="1234567890">
+            </label>
+            <label class="field">
+              <span>App ID</span>
+              <input id="settings-firebase-app-id" type="text" placeholder="1:1234567890:web:abcdef">
+            </label>
+          </div>
+        </section>
+
+        <div class="button-row">
+          <button class="primary-btn" type="submit">บันทึก Settings</button>
+          <button class="ghost-btn" id="reset-settings-btn" type="button">ล้างค่าที่กรอก</button>
+        </div>
+      </form>
+    </aside>
   </div>
 
   <script type="module" src="./app.js"></script>

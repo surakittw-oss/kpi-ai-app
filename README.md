@@ -19,6 +19,7 @@ MVP สำหรับประเมิน KPI จาก work note โดยใ
 - คำนวณ weighted score ออกมาเป็นคะแนนรวม 100
 - หาก Part 2 และ Part 3 ยังไม่ถูกตั้ง rubric จริง ระบบจะ normalize คะแนนจากหัวข้อที่ active อยู่และแจ้งไว้ในผลลัพธ์
 - บันทึก request และผลการวิเคราะห์ลง Firestore เมื่อเปิดใช้ Firebase
+- มีเมนู `Settings หลังบ้าน` สำหรับตั้งค่า provider default, API key แบบ prototype และ Firebase config ผ่านหน้าเว็บ
 
 ## การตั้งค่า
 
@@ -27,6 +28,11 @@ MVP สำหรับประเมิน KPI จาก work note โดยใ
 3. เปลี่ยน `enabled` เป็น `true`
 4. ใส่ Firebase web config ของโปรเจกต์จริง
 5. สร้าง Firestore collection ชื่อ `kpiEntries`
+
+หมายเหตุ:
+
+- ถ้าไม่ได้ตั้ง environment variables ฝั่ง server คุณยังสามารถกรอก API key ผ่านเมนู `Settings หลังบ้าน` ได้สำหรับการทดสอบภายใน
+- สำหรับ production ควรเก็บ API key ไว้ที่ server environment เท่านั้น ไม่ควรพึ่ง browser storage
 
 ## Firestore ที่แนะนำ
 

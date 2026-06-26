@@ -19,6 +19,7 @@ module.exports = async function handler(req, res) {
     const employeeName = (body.employeeName || "").trim();
     const reviewPeriod = (body.reviewPeriod || "").trim();
     const kpiConfig = body.kpiConfig || kpiConfigFromDisk;
+    const runtimeCredentials = body.runtimeCredentials || {};
 
     if (!note) {
       return res.status(400).json({ error: "Missing note" });
@@ -33,8 +34,8 @@ module.exports = async function handler(req, res) {
     });
 
     const raw = provider === "gemini"
-      ? await callGemini(prompt)
-      : await callOpenAI(prompt);
+      ? await callGemini(prompt, runtimeCredentials)
+      : await callOpenAI(prompt, runtimeCredentials);
 
     const parsed = parseJson(raw);
     const normalized = normalizeAnalysis(parsed, kpiConfig);
@@ -99,8 +100,8 @@ ${note}
   `.trim();
 }
 
-async function callOpenAI(prompt) {
-  const apiKey = process.env.OPENAI_API_KEY;
+async function callOpenAI(prompt, runtimeCredentials = {}) {
+  const apiKey = process.env.OPENAI_API_KEY || runtimeCredentials.openaiApiKey;
   const model = process.env.OPENAI_MODEL || "gpt-4.1-mini";
 
   if (!apiKey) {
@@ -138,8 +139,8 @@ async function callOpenAI(prompt) {
   return payload.choices?.[0]?.message?.content || "{}";
 }
 
-async function callGemini(prompt) {
-  const apiKey = process.env.GEMINI_API_KEY;
+async function callGemini(prompt, runtimeCredentials = {}) {
+  const apiKey = process.env.GEMINI_API_KEY || runtimeCredentials.geminiApiKey;
   const model = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 
   if (!apiKey) {
